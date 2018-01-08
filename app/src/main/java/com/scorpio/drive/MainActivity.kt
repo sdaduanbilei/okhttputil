@@ -14,7 +14,9 @@ class MainActivity : AppCompatActivity() {
 
         val map = HashMap<String, String>()
 
-        BaseHttp.get()
+        BaseHttp.get().param("v","1")
+
+
 
     }
 }

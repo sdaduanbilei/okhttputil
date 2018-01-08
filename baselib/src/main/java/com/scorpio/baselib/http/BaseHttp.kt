@@ -1,7 +1,9 @@
 package com.scorpio.baselib.http
 
-import com.scorpio.baselib.http.builder.GetBuilder
 import okhttp3.OkHttpClient
+import com.scorpio.baselib.http.builder.GetBuilder
+
+
 
 /**
  * Created by sdaduanbilei on 18-1-3.
@@ -18,7 +20,7 @@ object BaseHttp {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    fun get():GetBuilder<Any?> {
+    fun get(): GetBuilder {
         return GetBuilder()
     }
 }
