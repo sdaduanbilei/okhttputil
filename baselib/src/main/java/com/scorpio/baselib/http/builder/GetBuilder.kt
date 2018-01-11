@@ -1,6 +1,7 @@
 package com.scorpio.baselib.http.builder
 
 import android.net.Uri
+import android.util.Log
 import com.scorpio.baselib.http.request.GetRequest
 
 
@@ -12,14 +13,13 @@ import java.util.LinkedHashMap
  */
 class GetBuilder : OkHttpRequestBuilder<GetBuilder>(), HasParamsable {
 
+    private val TAG: String = "GetBuilder"
 
-
-    fun build(): RequestCall {
+    override fun build(): RequestCall {
         if (this.params != null) {
             url = this!!.appendParams(this.url!!, this.params!!).toString()
         }
-
-        return GetRequest(url, this.tag!!, this.params!!, this.headers!!, id).build()
+        return GetRequest(url, this.tag!!, this.params!!, this.headers!!, 1110).build()
     }
 
     protected fun appendParams(url: String?, params: Map<String, String>?): String? {
@@ -38,15 +38,19 @@ class GetBuilder : OkHttpRequestBuilder<GetBuilder>(), HasParamsable {
 
 
     override fun params(params: MutableMap<String, String>): GetBuilder {
-        this.params = params
+        if (this.params == null) {
+            this.params = params
+        }else{
+            this.params!!.putAll(params)
+        }
         return this
     }
 
     override fun param(key: String, `val`: String): GetBuilder {
-        if (this.params ==null){
+        if (this.params == null) {
             this.params = HashMap()
         }
-        this.params!!.put(key,`val`)
+        this.params!!.put(key, `val`)
         return this
     }
 }
