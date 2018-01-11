@@ -3,7 +3,6 @@ package com.scorpio.drive
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.scorpio.baselib.http.BaseHttp
-import com.scorpio.baselib.http.builder.GetBuilder
 import java.util.HashMap
 
 class MainActivity : AppCompatActivity() {
@@ -14,6 +13,7 @@ class MainActivity : AppCompatActivity() {
 
         val map = HashMap<String, String>()
 
+//        BaseHttp.get().param("v","1")
         BaseHttp.get().param("v","1")
 
 
