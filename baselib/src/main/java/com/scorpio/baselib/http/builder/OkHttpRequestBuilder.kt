@@ -9,9 +9,9 @@ import java.util.LinkedHashMap
  */
 abstract class OkHttpRequestBuilder<Self: OkHttpRequestBuilder<Self>> {
     protected var url: String = ""
-    protected var tag: Any? = null
-    protected var headers: MutableMap<String, String>? = null
-    protected var params: MutableMap<String, String>? = null
+    protected var tag: Any = System.currentTimeMillis()
+    protected var headers: MutableMap<String, String> = HashMap<String,String>()
+    protected var params: MutableMap<String, String> = HashMap<String,String>()
     protected var id: Int = 0
 
     fun id(id: Int): Self {

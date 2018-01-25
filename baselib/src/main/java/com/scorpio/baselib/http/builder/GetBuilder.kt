@@ -17,9 +17,9 @@ class GetBuilder : OkHttpRequestBuilder<GetBuilder>(), HasParamsable {
 
     override fun build(): RequestCall {
         if (this.params != null) {
-            url = this!!.appendParams(this.url!!, this.params!!).toString()
+            url = this.appendParams(this.url, this.params).toString()
         }
-        return GetRequest(url, this.tag!!, this.params!!, this.headers!!, 1110).build()
+        return GetRequest(url, this.tag, this.params, this.headers, id).build()
     }
 
     protected fun appendParams(url: String?, params: Map<String, String>?): String? {

@@ -1,8 +1,11 @@
 package com.scorpio.baselib.http.request
 
-import android.os.AsyncTask.execute
 import com.scorpio.baselib.http.BaseHttp
-import okhttp3.*
+import com.scorpio.baselib.http.callback.Callback
+import okhttp3.Call
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
@@ -40,7 +43,7 @@ class RequestCall(okHttpRequest: OkHttpRequest) {
         return this
     }
 
-    fun buildCall(callback: Callback?): Call? {
+    fun buildCall(callback: Callback): Call? {
         request = generateRequest(callback)
 
         if (readTimeOut > 0 || writeTimeOut > 0 || connTimeOut > 0) {
@@ -61,18 +64,12 @@ class RequestCall(okHttpRequest: OkHttpRequest) {
         return call
     }
 
-    private fun generateRequest(callback: Callback?): Request {
+    private fun generateRequest(callback: Callback): Request {
         return okHttpRequest!!.generateRequest(callback!!)
     }
 
-    fun execute(callback: Callback?) {
-        buildCall(callback)
+    fun execute(callback:Callback){
 
-        if (callback != null) {
-//            callback!!.onBefore(request, getOkHttpRequest().getId())
-        }
-
-//        OkHttpUtils.getInstance().execute(this, callback)
     }
 
     fun getCall(): Call? {
