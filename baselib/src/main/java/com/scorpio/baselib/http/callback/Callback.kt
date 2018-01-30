@@ -1,11 +1,23 @@
 package com.scorpio.baselib.http.callback
 
+import android.util.Log
 import okhttp3.Call
+import okhttp3.Callback
 import okhttp3.Request
 import okhttp3.Response
+import java.io.IOException
 
 
-abstract class Callback<T> {
+abstract class Callback<T> : Callback {
+    val TAG = "Callback"
+    override fun onResponse(call: Call?, response: Response?) {
+        Log.d(TAG,response!!.body()!!.string())
+    }
+
+    override fun onFailure(call: Call?, e: IOException?) {
+        Log.d(TAG,e.toString())
+    }
+
     /**
      * 用于验证数据合法性后,生成需要的数据对象
      */
@@ -57,6 +69,7 @@ abstract class Callback<T> {
 
     abstract fun onResponse(response: T, id: Int)
 
+
     companion object {
 
 //        var CALLBACK_DEFAULT : Callback = object :Callback{
@@ -79,5 +92,7 @@ abstract class Callback<T> {
 //            }
 //        }
     }
+
+
 
 }

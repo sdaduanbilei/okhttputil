@@ -20,4 +20,3 @@ data class Item(
 		@SerializedName("py") var py: String,
 		@SerializedName("ids") var ids: String
 )
-}

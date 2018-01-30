@@ -1,12 +1,10 @@
 package com.scorpio.baselib.http.builder
 
+
 import android.net.Uri
-import android.util.Log
 import com.scorpio.baselib.http.request.GetRequest
-
-
 import com.scorpio.baselib.http.request.RequestCall
-import java.util.LinkedHashMap
+import io.reactivex.exceptions.Exceptions
 
 /**
  * Created by zhy on 15/12/14.
@@ -16,13 +14,19 @@ class GetBuilder : OkHttpRequestBuilder<GetBuilder>(), HasParamsable {
     private val TAG: String = "GetBuilder"
 
     override fun build(): RequestCall {
-        if (this.params != null) {
+        if(url.isEmpty()){
+            Exceptions.propagate(Throwable("url can not be null ."))
+        }
+        if (this.params.isNotEmpty()) {
             url = this.appendParams(this.url, this.params).toString()
         }
         return GetRequest(url, this.tag, this.params, this.headers, id).build()
     }
 
-    protected fun appendParams(url: String?, params: Map<String, String>?): String? {
+    /**
+     * 构建参数
+     */
+    private fun appendParams(url: String?, params: Map<String, String>?): String? {
         if (url == null || params == null || params.isEmpty()) {
             return url
         }
@@ -37,20 +41,26 @@ class GetBuilder : OkHttpRequestBuilder<GetBuilder>(), HasParamsable {
     }
 
 
+    /**
+     * 添加params
+     */
     override fun params(params: MutableMap<String, String>): GetBuilder {
-        if (this.params == null) {
+        if (this.params.isEmpty()) {
             this.params = params
-        }else{
-            this.params!!.putAll(params)
+        } else {
+            this.params.putAll(params)
         }
         return this
     }
 
+    /**
+     * 添加单一param
+     */
     override fun param(key: String, `val`: String): GetBuilder {
-        if (this.params == null) {
+        if (this.params.isEmpty()) {
             this.params = HashMap()
         }
-        this.params!!.put(key, `val`)
+        this.params[key] = `val`
         return this
     }
 }

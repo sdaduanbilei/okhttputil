@@ -12,7 +12,7 @@ class GetRequest(url: String, tag: Any, params: Map<String, String>, headers: Ma
         return null
     }
 
-    override fun buildRequest(requestBody: RequestBody): Request {
+    override fun buildRequest(requestBody: RequestBody?): Request {
         return builder.get().build()
     }
 

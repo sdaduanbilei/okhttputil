@@ -1,10 +1,9 @@
 package com.scorpio.baselib.http.request
 
-import okhttp3.Request
-import okhttp3.RequestBody
-import io.reactivex.exceptions.Exceptions
 import okhttp3.Callback
 import okhttp3.Headers
+import okhttp3.Request
+import okhttp3.RequestBody
 
 
 /**
@@ -22,17 +21,17 @@ abstract class OkHttpRequest(private var url:String, private var tag: Any, priva
      * 初始化一些基本参数 url , tag , headers
      */
     private fun initBuilder() {
-        builder.url(url!!).tag(tag)
+        builder.url(url).tag(tag)
         appendHeaders()
     }
 
     protected abstract fun buildRequestBody(): RequestBody?
 
-    protected fun wrapRequestBody(requestBody: RequestBody, callback: Callback): RequestBody {
+    private fun wrapRequestBody(requestBody: RequestBody?, callback: Callback): RequestBody? {
         return requestBody
     }
 
-    protected abstract fun buildRequest(requestBody: RequestBody): Request
+    protected abstract fun buildRequest(requestBody: RequestBody?): Request
 
     fun build(): RequestCall {
         return RequestCall(this)
@@ -41,20 +40,25 @@ abstract class OkHttpRequest(private var url:String, private var tag: Any, priva
 
     fun generateRequest(callback: Callback): Request {
         val requestBody = buildRequestBody()
-        val wrappedRequestBody = wrapRequestBody(requestBody!!, callback)
+        val wrappedRequestBody = wrapRequestBody(requestBody, callback)
         return buildRequest(wrappedRequestBody)
     }
 
 
-    protected fun appendHeaders() {
+    /**
+     * 添加header
+     */
+    private fun appendHeaders() {
         val headerBuilder = Headers.Builder()
-        if (headers == null || headers!!.isEmpty()) return
+        if (headers.isEmpty()) return
 
-        for (key in headers!!.keys) {
-            headerBuilder.add(key, headers!![key])
+        for (key in headers.keys) {
+            headerBuilder.add(key, headers[key])
         }
         builder.headers(headerBuilder.build())
     }
 
-
+    fun getId():Int{
+        return id
+    }
 }
