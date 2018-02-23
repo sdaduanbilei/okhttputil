@@ -1,22 +1,13 @@
 package com.scorpio.baselib.http.callback
 
-import android.util.Log
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Request
 import okhttp3.Response
-import java.io.IOException
 
 
-abstract class Callback<T> : Callback {
+abstract class Callback<T> :Callback {
     val TAG = "Callback"
-    override fun onResponse(call: Call?, response: Response?) {
-        Log.d(TAG,response!!.body()!!.string())
-    }
-
-    override fun onFailure(call: Call?, e: IOException?) {
-        Log.d(TAG,e.toString())
-    }
 
     /**
      * 用于验证数据合法性后,生成需要的数据对象
@@ -53,46 +44,16 @@ abstract class Callback<T> : Callback {
      * @return 返回null表示没有错误,String为数据出错原因
      */
     @Throws(Exception::class)
-    fun validateReponse(response: Response, id: Int): String? {
+    open fun validateReponse(response: Response, id: Int): String? {
         return null
     }
-
     /**
      * Thread Pool Thread
      *
      * @param response
      */
     @Throws(Exception::class)
-    abstract fun parseNetworkResponse(response: Response, id: Int): T
-
+    abstract fun parseNetworkResponse(response: Response, id: Int): T?
     abstract fun onError(call: Call, e: Exception, id: Int)
-
-    abstract fun onResponse(response: T, id: Int)
-
-
-    companion object {
-
-//        var CALLBACK_DEFAULT : Callback = object :Callback{
-//
-//        }
-
-//        var CALLBACK_DEFAULT: Callback<*> = object : Callback() {
-//
-//            @Throws(Exception::class)
-//            override fun parseNetworkResponse(response: Response, id: Int): Any? {
-//                return null
-//            }
-//
-//            override fun onError(call: Call, e: Exception, id: Int) {
-//
-//            }
-//
-//            override fun onResponse(response: Any, id: Int) {
-//
-//            }
-//        }
-    }
-
-
-
+    abstract fun onResponse(response: Any, id: Int)
 }

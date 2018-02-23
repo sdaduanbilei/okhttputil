@@ -3,14 +3,18 @@ package com.scorpio.drive
 import android.os.Bundle
 import android.os.StrictMode
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import com.scorpio.baselib.http.BaseHttp
-import com.scorpio.drive.domain.CityData
+import com.scorpio.drive.domain.HomeData
+import com.scorpio.drive.domain.JsonCallback
 import okhttp3.Call
+import java.io.IOException
 import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
 
+    private val TAG = "MainActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -23,22 +27,23 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadData() {
         val map = HashMap<String, String>()
-        map["act"] = "GetDisposeArea"
+        map["label"] = "891839124172845058"
+        map["cityId"] = "5301029"
         BaseHttp().get()
-                .url("https://m.9ji.com/app/2_0/ProductSearch.aspx")
+                .url("https://m.9ji.com/web/api/floors/v2")
                 .param("t", Date().time.toString())
                 .params(map)
                 .tag("1")
                 .build()
-                .execute(object : BaseCallBack<List<CityData>>() {
-                    override fun onError(call: Call, e: Exception, id: Int) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                .execute(object : JsonCallback<HomeData>() {
+                    override fun onResponse(response: Any, id: Int) {
+                        val homeData = response as HomeData
+                        Log.d(TAG,homeData.label[0].title)
                     }
 
-                    override fun onResponse(response: List<CityData>, id: Int) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    override fun onFailure(call: Call?, e: IOException?) {
+                        Log.d(TAG,e!!.localizedMessage)
                     }
-
                 })
     }
 }

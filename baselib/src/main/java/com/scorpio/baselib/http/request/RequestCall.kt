@@ -6,9 +6,7 @@ import com.scorpio.baselib.http.callback.Callback
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
-import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 
@@ -44,7 +42,7 @@ class RequestCall(request: OkHttpRequest) {
     }
 
 
-    fun buildCall(callback: Callback<*>): Call? {
+    private fun buildCall(callback: Callback<*>): Call? {
         request = generateRequest(callback)
         val loggingInterceptor = HttpLoggingInterceptor(HttpLogger())
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
@@ -74,15 +72,10 @@ class RequestCall(request: OkHttpRequest) {
         return okHttpRequest.generateRequest(callback)
     }
 
-    @Throws(IOException::class)
-    fun execute(callback: Callback<*>): Response {
+    fun execute(callback: Callback<*>) {
         buildCall(callback)
-        val response = call!!.execute()
-        if (response.isSuccessful) {
-//            Log.d(TAG, response.body()!!.string())
-        }
-        return response
-
+        callback.onBefore(request!!,getOkHttpRequest()!!.getId())
+        BaseHttp().execute(this,callback)
     }
 
     fun getCall(): Call? {
