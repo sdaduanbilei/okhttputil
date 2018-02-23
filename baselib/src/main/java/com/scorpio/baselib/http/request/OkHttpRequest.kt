@@ -1,6 +1,6 @@
 package com.scorpio.baselib.http.request
 
-import okhttp3.Callback
+import com.scorpio.baselib.http.callback.Callback
 import okhttp3.Headers
 import okhttp3.Request
 import okhttp3.RequestBody
@@ -27,7 +27,7 @@ abstract class OkHttpRequest(private var url:String, private var tag: Any, priva
 
     protected abstract fun buildRequestBody(): RequestBody?
 
-    private fun wrapRequestBody(requestBody: RequestBody?, callback: Callback): RequestBody? {
+    private fun wrapRequestBody(requestBody: RequestBody?, callback: Callback<*>): RequestBody? {
         return requestBody
     }
 
@@ -38,7 +38,7 @@ abstract class OkHttpRequest(private var url:String, private var tag: Any, priva
     }
 
 
-    fun generateRequest(callback: Callback): Request {
+    fun generateRequest(callback: Callback<*>): Request {
         val requestBody = buildRequestBody()
         val wrappedRequestBody = wrapRequestBody(requestBody, callback)
         return buildRequest(wrappedRequestBody)

@@ -1,7 +1,7 @@
 package com.scorpio.baselib.http.request
 
-import com.scorpio.baselib.http.BaseHttp
 import com.scorpio.baselib.http.HttpLogger
+import com.scorpio.baselib.http.OkHttpUtils
 import com.scorpio.baselib.http.callback.Callback
 import okhttp3.Call
 import okhttp3.OkHttpClient
@@ -47,11 +47,11 @@ class RequestCall(request: OkHttpRequest) {
         val loggingInterceptor = HttpLoggingInterceptor(HttpLogger())
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         if (readTimeOut > 0 || writeTimeOut > 0 || connTimeOut > 0) {
-            readTimeOut = if (readTimeOut > 0) readTimeOut else BaseHttp().DEFAULT_MILLISECONDS
-            writeTimeOut = if (writeTimeOut > 0) writeTimeOut else BaseHttp().DEFAULT_MILLISECONDS
-            connTimeOut = if (connTimeOut > 0) connTimeOut else BaseHttp().DEFAULT_MILLISECONDS
+            readTimeOut = if (readTimeOut > 0) readTimeOut else OkHttpUtils.DEFAULT_MILLISECONDS
+            writeTimeOut = if (writeTimeOut > 0) writeTimeOut else OkHttpUtils.DEFAULT_MILLISECONDS
+            connTimeOut = if (connTimeOut > 0) connTimeOut else OkHttpUtils.DEFAULT_MILLISECONDS
             // 请求缓存
-            client = BaseHttp().getOkHttpClient().newBuilder()
+            client = OkHttpUtils().getOkHttpClient().newBuilder()
                     .readTimeout(readTimeOut, TimeUnit.MILLISECONDS)
                     .writeTimeout(writeTimeOut, TimeUnit.MILLISECONDS)
                     .connectTimeout(connTimeOut, TimeUnit.MILLISECONDS)
@@ -59,7 +59,7 @@ class RequestCall(request: OkHttpRequest) {
                     .build()
             call = client!!.newCall(request!!)
         } else {
-            client = BaseHttp().getOkHttpClient().newBuilder()
+            client = OkHttpUtils().getOkHttpClient().newBuilder()
                     .addNetworkInterceptor(loggingInterceptor)
                     .build()
             call = client!!.newCall(request!!)
@@ -75,7 +75,7 @@ class RequestCall(request: OkHttpRequest) {
     fun execute(callback: Callback<*>) {
         buildCall(callback)
         callback.onBefore(request!!,getOkHttpRequest()!!.getId())
-        BaseHttp().execute(this,callback)
+        OkHttpUtils().execute(this,callback)
     }
 
     fun getCall(): Call? {

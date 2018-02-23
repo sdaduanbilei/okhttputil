@@ -1,12 +1,11 @@
 package com.scorpio.baselib.http.callback
 
 import okhttp3.Call
-import okhttp3.Callback
 import okhttp3.Request
 import okhttp3.Response
 
 
-abstract class Callback<T> :Callback {
+abstract class Callback<T> {
     val TAG = "Callback"
 
     /**
@@ -55,5 +54,19 @@ abstract class Callback<T> :Callback {
     @Throws(Exception::class)
     abstract fun parseNetworkResponse(response: Response, id: Int): T?
     abstract fun onError(call: Call, e: Exception, id: Int)
-    abstract fun onResponse(response: Any, id: Int)
+    abstract fun onSucc(response: Any, id: Int)
+
+    companion object {
+        val CALLBACK_DEFAULT = object : Callback<Any>() {
+            override fun onSucc(response: Any, id: Int) {
+            }
+
+            override fun parseNetworkResponse(response: Response, id: Int): Any? {
+                return null
+            }
+
+            override fun onError(call: Call, e: Exception, id: Int) {
+            }
+        }
+    }
 }
