@@ -9,10 +9,11 @@ import okhttp3.RequestBody
 /**
  * Created by sdaduanbilei on 18-1-3.
  */
-abstract class OkHttpRequest(private var url:String, private var tag: Any, private var params: Map<String, String>, private var headers: Map<String, String>, private var id: Int) {
+abstract class OkHttpRequest(protected var url:String, protected var tag: Any, protected var params: Map<String, String>, protected var headers: Map<String, String>, private var id: Int) {
 
 
     protected var builder = Request.Builder()
+
 
     init {
         initBuilder()
@@ -34,7 +35,7 @@ abstract class OkHttpRequest(private var url:String, private var tag: Any, priva
     protected abstract fun buildRequest(requestBody: RequestBody?): Request
 
     fun build(): RequestCall {
-        return RequestCall(this)
+        return RequestCall( this)
     }
 
 

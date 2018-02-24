@@ -3,10 +3,12 @@ package com.scorpio.baselib.http.builder
 
 import com.scorpio.baselib.http.request.RequestCall
 import java.util.LinkedHashMap
+import kotlin.collections.HashMap
 
 /**
  * Created by zhy on 15/12/14.
  */
+@Suppress("UNCHECKED_CAST")
 abstract class OkHttpRequestBuilder<Self: OkHttpRequestBuilder<Self>> {
     protected var url: String = ""
     protected var tag: Any = System.currentTimeMillis()
@@ -36,10 +38,10 @@ abstract class OkHttpRequestBuilder<Self: OkHttpRequestBuilder<Self>> {
     }
 
     fun addHeader(key: String, `val`: String): Self {
-        if (this.headers == null) {
+        if (this.headers.isEmpty()) {
             headers = LinkedHashMap()
         }
-        headers!!.put(key, `val`)
+        headers[key] = `val`
         return this as Self
     }
 

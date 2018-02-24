@@ -1,8 +1,10 @@
 package com.scorpio.baselib.http
 
 import com.scorpio.baselib.http.builder.GetBuilder
+import com.scorpio.baselib.http.builder.PostFormBuilder
 import com.scorpio.baselib.http.callback.Callback
 import com.scorpio.baselib.http.request.RequestCall
+import com.scorpio.baselib.http.utils.Platform
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -45,6 +47,10 @@ class OkHttpUtils {
 
     fun get(): GetBuilder {
         return GetBuilder()
+    }
+
+    fun post():PostFormBuilder{
+        return PostFormBuilder()
     }
 
 
@@ -101,7 +107,7 @@ class OkHttpUtils {
         })
     }
 
-    private fun cancelTag(tag: Any) {
+    fun cancelTag(tag: Any) {
         // 取消队列中的请求
         for (call in mOkHttpClint!!.dispatcher().queuedCalls()) {
             if (tag == call.request().tag()) {
