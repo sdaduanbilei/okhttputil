@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadData() {
         OkHttpUtils().get()
-                .url("https://m.9ji.com/web/api/products/productCityDetail/v1")
+                .url("https://m.baidu.com/web/api/products/productCityDetail/v1")
                 .param("ppid","582069")
                 .tag(this)
                 .build()
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         map["cityId"] = "530102"
         val file = File("/storage/emulated/0/9ji/1519456887211.jpg")
         OkHttpUtils().post()
-                .url("https://m.9ji.com/app/3_0/UserHandler.ashx")
+                .url("https://m.baidu.com/app/3_0/UserHandler.ashx")
                 .param("act", "UploadUserFace")
                 .param("userid","54119")
                 .params(map)
