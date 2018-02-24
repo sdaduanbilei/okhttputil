@@ -22,7 +22,7 @@ abstract class JsonCallback<T> : GenericsCallback<T>(JsonGenericsSerializator())
             val data = json.getString("data")
             val code = json.getIntValue("code")
             val msg = json.getString("userMsg")
-            if (code ==0){
+            if (code == 0){
                 validateData = data
             }else{
                 return msg

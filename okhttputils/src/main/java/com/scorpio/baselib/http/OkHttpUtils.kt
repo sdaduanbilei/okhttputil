@@ -55,7 +55,7 @@ class OkHttpUtils {
         val id = requestCall.getOkHttpRequest()!!.getId()
         requestCall.getCall()!!.enqueue(object : okhttp3.Callback {
             override fun onFailure(call: Call, e: IOException?) {
-                sendFailCallBack(call,IOException(e),callback,id)
+                sendFailCallBack(call, IOException(e), callback, id)
             }
 
             // 响应成功
@@ -69,12 +69,10 @@ class OkHttpUtils {
                     return
                 }
                 // 校验数据合法性
-                val validateErrorMsg = callback.validateReponse(response, id)
-                if (validateErrorMsg != null) {
-                    if (!validateErrorMsg.isEmpty()) {
-                        sendFailCallBack(call, IOException(validateErrorMsg), callback, id)
-                        return
-                    }
+                val validateErrorMsg:String = callback.validateReponse(response, id)!!
+                if (!validateErrorMsg.isEmpty()) {
+                    sendFailCallBack(call, IOException(validateErrorMsg), callback, id)
+                    return
                 }
                 // 校验Object 并返回
                 val o = callback.parseNetworkResponse(response, id)
@@ -103,15 +101,18 @@ class OkHttpUtils {
         })
     }
 
-    private fun cancelTag(tag:Any){
+    private fun cancelTag(tag: Any) {
         // 取消队列中的请求
-        mOkHttpClint!!.dispatcher().queuedCalls()
-                .filter { tag == it.request().tag() }
-                .forEach { it.cancel() }
-        // 取消正在运行的请求
-        mOkHttpClint!!.dispatcher().runningCalls()
-                .filter { tag == it.request().tag() }
-                .forEach { it.cancel() }
+        for (call in mOkHttpClint!!.dispatcher().queuedCalls()) {
+            if (tag == call.request().tag()) {
+                call.cancel()
+            }
+        }
+        for (call in mOkHttpClint!!.dispatcher().runningCalls()) {
+            if (tag == call.request().tag()) {
+                call.cancel()
+            }
+        }
     }
 
     object METHOD {

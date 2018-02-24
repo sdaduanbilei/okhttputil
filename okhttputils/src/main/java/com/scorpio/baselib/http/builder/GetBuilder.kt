@@ -4,7 +4,6 @@ package com.scorpio.baselib.http.builder
 import android.net.Uri
 import com.scorpio.baselib.http.request.GetRequest
 import com.scorpio.baselib.http.request.RequestCall
-import io.reactivex.exceptions.Exceptions
 
 /**
  * Created by zhy on 15/12/14.
@@ -15,7 +14,7 @@ class GetBuilder : OkHttpRequestBuilder<GetBuilder>(), HasParamsable {
 
     override fun build(): RequestCall {
         if(url.isEmpty()){
-            Exceptions.propagate(Throwable("url can not be null ."))
+            Throwable("url can not be null .")
         }
         if (this.params.isNotEmpty()) {
             url = this.appendParams(this.url, this.params).toString()

@@ -27,7 +27,7 @@ abstract class GenericsCallback<T>(jsonGenericsSerializator: JsonGenericsSeriali
 
         val parameterize = superclass as ParameterizedType
         val mType = parameterize.actualTypeArguments[0]
-        return if (mType === String::class.java) {
+        return if (mType === String::class.java) { // 支持直接返回 JSON String
             validateData as T
         } else {
             // response  2 object 以后可以转换

@@ -20,11 +20,29 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        mProgressDialog = ProgressDialog.show(this,"","loading")
+//        mProgressDialog = ProgressDialog.show(this,"","loading")
         loadData()
     }
 
     private fun loadData() {
+
+        OkHttpUtils().get()
+                .url("https://m.9ji.com/web/api/products/productCityDetail/v1")
+                .param("ppid","582069")
+                .tag(this)
+                .build()
+                .execute(object:JsonCallback<String>(){
+                    override fun onError(call: Call, e: Exception, id: Int) {
+                        Log.d(TAG,"onError" + e.localizedMessage)
+                    }
+
+                    override fun onSucc(response: Any, id: Int) {
+                        Log.d(TAG,response.toString())
+                    }
+
+                })
+
+
         val map = HashMap<String, String>()
         map["label"] = ""
         map["cityId"] = "530102"
@@ -32,15 +50,14 @@ class MainActivity : AppCompatActivity() {
                 .url("https://m.9ji.com/web/api/floors/v1")
                 .param("t", Date().time.toString())
                 .params(map)
-                .tag("1")
+                .tag(this)
                 .build()
                 .execute(object : JsonCallback<HomeData>() {
                     override fun onError(call: Call, e: Exception, id: Int) {
-                        Log.d(TAG,e.localizedMessage)
+                        Log.d(TAG,e.toString())
                     }
 
                     override fun onSucc(response: Any, id: Int) {
-                        mProgressDialog!!.dismiss()
                         val homeData = response as HomeData
                         Log.d(TAG,homeData.label[0].title)
                     }
