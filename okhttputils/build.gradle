@@ -5,7 +5,7 @@ apply plugin: 'kotlin-android'
 android {
     compileSdkVersion 26
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion 17
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -39,8 +39,8 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.9.1'
 
 
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    compile 'com.jakewharton:disklrucache:2.0.2'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.jakewharton:disklrucache:2.0.2'
 }
 repositories {
     mavenCentral()

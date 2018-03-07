@@ -1,7 +1,7 @@
 package com.scorpio.drive;
 
-import com.alibaba.fastjson.JSONObject;
 import com.scorpio.baselib.http.OkHttpUtils;
+import com.scorpio.drive.domain.DetailData;
 import com.scorpio.drive.domain.JsonCallback;
 
 /**
@@ -10,14 +10,11 @@ import com.scorpio.drive.domain.JsonCallback;
 
 public class DataControl {
 
-	public void test(Object tag,JsonCallback<String> callback) {
-
-		JSONObject json = new JSONObject();
-		json.put("imei","352677080235525");
+	public void test(Object tag,JsonCallback<DetailData> callback) {
 		new OkHttpUtils()
-				.postString()
-				.url("https://m.9ji.com/web/api/phoneDevices/add/v1")
-				.content(json.toString())
+				.get()
+				.url("https://m.9ji.com/web/api/products/productCityDetail/v1")
+				.param("ppid","58206")
 				.addHeader("City","530102")
 				.tag(tag)
 				.build()

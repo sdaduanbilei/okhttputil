@@ -2,10 +2,11 @@ package com.scorpio.drive
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import com.scorpio.baselib.http.OkHttpUtils
+import com.scorpio.drive.domain.DetailData
 import com.scorpio.drive.domain.JsonCallback
 import kotlinx.android.synthetic.main.activity_main.*
-import okhttp3.Call
 
 
 class MainActivity : AppCompatActivity() {
@@ -17,17 +18,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadData() {
 
-        DataControl().test(this,object :JsonCallback<String>(){
-            override fun onError(call: Call, e: Exception, id: Int) {
-
+        DataControl().test(this,object :JsonCallback<DetailData>(){
+            override fun onError(call: okhttp3.Call, e: Exception, id: Int) {
+                Log.d("onError" ,e.toString())
             }
 
             override fun onSucc(response: Any, id: Int) {
-                mText.text = "onSucc ===" + response.toString()
+                val detailData = response as DetailData
+                mText.text = "onSucc ===" + detailData.profile.title
             }
 
             override fun onCache(response: Any?, id: Int) {
-                mText.text = "cache ===" + response.toString()
+                val detailData = response as DetailData
+                mText.text = "cache ===" + detailData.instalment.description
             }
 
 
