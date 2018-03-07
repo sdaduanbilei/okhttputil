@@ -11,6 +11,7 @@ import com.scorpio.baselib.http.utils.Platform
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Response
+import okhttp3.ResponseBody
 import java.io.IOException
 
 
@@ -75,18 +76,15 @@ class OkHttpUtils {
      */
     fun execute(requestCall: RequestCall, callback: Callback<*>) {
         val id = requestCall.getOkHttpRequest()!!.getId()
-
         mPlatform!!.execute(Runnable {
-            val responseString = mBaseCache!!.getCache(requestCall.getRequest()!!)!!.string()
-            if (responseString != null) {
+            val responseBody:ResponseBody? = mBaseCache!!.getCache(requestCall.getRequest()!!)
+            if (responseBody != null) {
                 // 校验Object 并返回
-                callback.validateReponse(responseString, id)!!
-                val o = callback.parseNetworkResponse(responseString,id)
+                callback.validateReponse(responseBody.string(), id)!!
+                val o = callback.parseNetworkResponse(responseBody.string(),id)
                 sendSuccCallback(ResponseResult(true, o), callback, id)
             }
         })
-
-
 
         requestCall.getCall()!!.enqueue(object : okhttp3.Callback {
             override fun onFailure(call: Call, e: IOException?) {

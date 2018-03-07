@@ -2,7 +2,6 @@ package com.scorpio.drive
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import com.scorpio.baselib.http.OkHttpUtils
 import com.scorpio.drive.domain.JsonCallback
 import kotlinx.android.synthetic.main.activity_main.*
@@ -17,25 +16,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadData() {
-        OkHttpUtils().get()
-                .url("https://m.9ji.com/web/api/products/productCityDetail/v1")
-                .param("ppid", "58206")
-                .tag(this)
-                .build()
-                .execute(object : JsonCallback<String>() {
-                    override fun onCache(response: Any?, id: Int) {
-                        mText.text = "cache======" + response.toString()
-                    }
 
-                    override fun onError(call: Call, e: Exception, id: Int) {
-                        Log.d(TAG, "onError" + e.localizedMessage)
-                    }
+        DataControl().test(this,object :JsonCallback<String>(){
+            override fun onError(call: Call, e: Exception, id: Int) {
 
-                    override fun onSucc(response: Any, id: Int) {
-                        mText.text = "onSucc"
-                    }
+            }
 
-                })
+            override fun onSucc(response: Any, id: Int) {
+                mText.text = "onSucc ===" + response.toString()
+            }
+
+            override fun onCache(response: Any?, id: Int) {
+                mText.text = "cache ===" + response.toString()
+            }
+
+
+        })
+
 
     }
 

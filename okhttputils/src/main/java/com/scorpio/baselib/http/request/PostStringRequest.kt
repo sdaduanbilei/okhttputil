@@ -9,7 +9,7 @@ import okhttp3.RequestBody
  */
 class PostStringRequest(url: String, tag: Any, params: MutableMap<String, String>, headers: MutableMap<String, String>, content: String?, mediaType: MediaType?, id: Int) : OkHttpRequest(url, tag, params, headers, id){
 
-    private var mediaType:MediaType = MediaType.parse("text/plain;charset=utf-8")!!
+    private var mediaType:MediaType = MediaType.parse("application/json;charset=utf-8")!!
     private var content:String? = null
     init {
         this.content = content

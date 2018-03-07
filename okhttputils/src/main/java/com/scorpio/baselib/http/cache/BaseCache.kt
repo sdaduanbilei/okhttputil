@@ -32,7 +32,8 @@ class BaseCache(context: Context) {
         try {
             buffer.write(data!!.toByteArray())
             val rawResponse = buffer.readByteArray()
-            val editor = mDiskLruCache!!.edit(HashUtil().hashKeyForDisk(response.request().url().toString()))
+            val key = response.request().url().toString()
+            val editor = mDiskLruCache!!.edit(HashUtil().hashKeyForDisk(key))
             editor.set(0, String(rawResponse, Charset.defaultCharset()))
             editor.commit()
             buffer.clone()
@@ -42,12 +43,13 @@ class BaseCache(context: Context) {
     }
 
     fun getCache(request: Request): ResponseBody? {
-        val cacheKey = HashUtil().hashKeyForDisk(request.url().toString())
+        val key = request.url().toString() + request.body()
+        val cacheKey = HashUtil().hashKeyForDisk(key)
         val cacheSnapshot = mDiskLruCache!!.get(cacheKey)
-        if (cacheSnapshot != null) {
-            return ResponseBody.create(null,cacheSnapshot.getString(0).toByteArray())
+        return if (cacheSnapshot != null) {
+            ResponseBody.create(null,cacheSnapshot.getString(0).toByteArray())
         }else{
-            return null
+            null
         }
 
     }

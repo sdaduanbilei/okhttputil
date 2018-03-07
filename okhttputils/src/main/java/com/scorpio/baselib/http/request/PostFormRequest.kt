@@ -21,8 +21,7 @@ class PostFormRequest(url: String, tag: Any, params: Map<String, String>, header
         if (files!!.isEmpty()){
             val builder:FormBody.Builder = FormBody.Builder()
             addParams(builder)
-            val formBody = builder.build()
-            return formBody
+            return  builder.build()
         }else{
             val builder:MultipartBody.Builder = MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
