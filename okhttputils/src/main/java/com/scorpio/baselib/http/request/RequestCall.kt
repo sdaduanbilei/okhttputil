@@ -66,7 +66,6 @@ class RequestCall(request: OkHttpRequest) {
                     .build()
             call = client!!.newCall(request!!)
         }
-
         return call
     }
 

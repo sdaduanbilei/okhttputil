@@ -3,7 +3,6 @@ package com.scorpio.drive.domain
 import com.alibaba.fastjson.JSON
 import com.scorpio.baselib.http.callback.GenericsCallback
 import com.scorpio.baselib.http.callback.JsonGenericsSerializator
-import okhttp3.Response
 
 
 /**
@@ -14,8 +13,8 @@ import okhttp3.Response
 abstract class JsonCallback<T> : GenericsCallback<T>(JsonGenericsSerializator()) {
 
     @Throws(Exception::class)
-    override fun validateReponse(response: Response, id: Int): String {
-        val json = JSON.parseObject(response.body()!!.string())
+    override fun validateReponse(responseString: String, id: Int): String {
+        val json = JSON.parseObject(responseString)
         if (json == null) {
             return "Response is not json data!!!"
         } else {

@@ -1,8 +1,10 @@
 package com.scorpio.baselib.http
 
+import android.content.Context
 import com.scorpio.baselib.http.builder.GetBuilder
 import com.scorpio.baselib.http.builder.PostFormBuilder
 import com.scorpio.baselib.http.builder.PostStringBuilder
+import com.scorpio.baselib.http.cache.BaseCache
 import com.scorpio.baselib.http.callback.Callback
 import com.scorpio.baselib.http.request.RequestCall
 import com.scorpio.baselib.http.utils.Platform
@@ -25,11 +27,13 @@ class OkHttpUtils {
      * companion object 只能定义在对应的类中
      */
     private var mInstance: OkHttpUtils? = null
+
     companion object {
         const val TAG = "OkHttpUtils"
         const val DEFAULT_MILLISECONDS = 10000L
         private var mOkHttpClint: OkHttpClient? = null
         private var mPlatform: Platform? = null
+        private var mBaseCache: BaseCache? = null
 
     }
 
@@ -44,7 +48,8 @@ class OkHttpUtils {
     }
 
 
-    fun initClient(client: OkHttpClient?) {
+    fun initClient(client: OkHttpClient?,context: Context) {
+        mBaseCache = BaseCache(context)
         mOkHttpClint = client
     }
 
@@ -56,11 +61,11 @@ class OkHttpUtils {
         return GetBuilder()
     }
 
-    fun post():PostFormBuilder{
+    fun post(): PostFormBuilder {
         return PostFormBuilder()
     }
 
-    fun postString():PostStringBuilder{
+    fun postString(): PostStringBuilder {
         return PostStringBuilder()
     }
 
@@ -70,6 +75,19 @@ class OkHttpUtils {
      */
     fun execute(requestCall: RequestCall, callback: Callback<*>) {
         val id = requestCall.getOkHttpRequest()!!.getId()
+
+        mPlatform!!.execute(Runnable {
+            val responseString = mBaseCache!!.getCache(requestCall.getRequest()!!)!!.string()
+            if (responseString != null) {
+                // 校验Object 并返回
+                callback.validateReponse(responseString, id)!!
+                val o = callback.parseNetworkResponse(responseString,id)
+                sendSuccCallback(ResponseResult(true, o), callback, id)
+            }
+        })
+
+
+
         requestCall.getCall()!!.enqueue(object : okhttp3.Callback {
             override fun onFailure(call: Call, e: IOException?) {
                 sendFailCallBack(call, IOException(e), callback, id)
@@ -85,16 +103,20 @@ class OkHttpUtils {
                     sendFailCallBack(call, IOException("request failed ,response code is :" + response.code()), callback, id)
                     return
                 }
+
+                val result = response.body()!!.string()
                 // 校验数据合法性
-                val validateErrorMsg:String = callback.validateReponse(response, id)!!
+                val validateErrorMsg: String = callback.validateReponse(result, id)!!
                 if (!validateErrorMsg.isEmpty()) {
                     sendFailCallBack(call, IOException(validateErrorMsg), callback, id)
                     return
                 }
                 // 校验Object 并返回
-                val o = callback.parseNetworkResponse(response, id)
+
+                val o = callback.parseNetworkResponse(result, id)
                 if (o != null) {
-                    sendSuccCallback(o, callback, id)
+                    mBaseCache!!.addCache(result,response)
+                    sendSuccCallback(ResponseResult(false, o), callback, id)
                 } else {
                     sendFailCallBack(call, IOException("object is null !!!"), callback, id)
                 }
@@ -105,11 +127,18 @@ class OkHttpUtils {
 
     private fun sendSuccCallback(o: Any, callback: Callback<*>, id: Int) {
         mPlatform!!.execute(Runnable {
-            callback.onSucc(o, id)
+            val responseResult: ResponseResult<Any> = o as ResponseResult<Any>
+            if (responseResult.isCache) {
+                callback.onCache(responseResult.result,id)
+            } else {
+                callback.onSucc(responseResult.result!!, id)
+            }
             callback.onAfter(id)
         })
 
+
     }
+
 
     private fun sendFailCallBack(call: Call, ioException: IOException, callback: Callback<*>, id: Int) {
         mPlatform!!.execute(Runnable {

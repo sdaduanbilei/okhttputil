@@ -17,6 +17,6 @@ class App : Application() {
         val client = OkHttpClient.Builder()
                 .cookieJar(cookieJar)
                 .build()
-        OkHttpUtils().initClient(client)
+        OkHttpUtils().initClient(client,applicationContext)
     }
 }

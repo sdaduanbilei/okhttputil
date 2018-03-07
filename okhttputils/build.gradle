@@ -38,6 +38,7 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp-urlconnection:3.9.1'
     compile 'com.squareup.okhttp3:logging-interceptor:3.9.1'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    compile 'com.jakewharton:disklrucache:2.0.2'
 }
 repositories {
     mavenCentral()
