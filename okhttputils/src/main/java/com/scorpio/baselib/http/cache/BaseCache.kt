@@ -43,7 +43,7 @@ class BaseCache(context: Context) {
     }
 
     fun getCache(request: Request): ResponseBody? {
-        val key = request.url().toString() + request.body()
+        val key = request.url().toString()
         val cacheKey = HashUtil().hashKeyForDisk(key)
         val cacheSnapshot = mDiskLruCache!!.get(cacheKey)
         return if (cacheSnapshot != null) {
