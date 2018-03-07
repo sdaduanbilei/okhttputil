@@ -16,18 +16,32 @@ abstract class JsonCallback<T> : GenericsCallback<T>(JsonGenericsSerializator())
     @Throws(Exception::class)
     override fun validateReponse(response: Response, id: Int): String {
         val json = JSON.parseObject(response.body()!!.string())
-        if (json == null){
+        if (json == null) {
             return "Response is not json data!!!"
-        }else{
+        } else {
             val data = json.getString("data")
-            val code = json.getIntValue("code")
-            val msg = json.getString("userMsg")
-            if (code == 0){
-                validateData = data
-            }else{
-                return msg
+            if (json.containsKey("stats")) {
+                val status = json.getIntValue("stats")
+                val msg = json.getString("msg")
+                if (status == 1) {
+                    validateData = data
+                } else {
+                    return msg
+                }
+            } else {
+                val code = json.getIntValue("code")
+                val msg = json.getString("userMsg")
+                if (code == 0) {
+                    if (data.isNullOrEmpty()) {
+                        validateData = json.toString()
+                    } else {
+                        validateData = data
+                    }
+                } else {
+                    return msg
+                }
             }
         }
-        return  ""
+        return ""
     }
 }

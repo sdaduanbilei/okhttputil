@@ -16,7 +16,7 @@ abstract class GenericsCallback<T>(jsonGenericsSerializator: JsonGenericsSeriali
 
     override fun parseNetworkResponse(response: Response, id: Int): T? {
         // 数据验证不通过，json data 为空
-        if (validateData!!.isEmpty()){
+        if (validateData!!.isNullOrEmpty()){
             return null
         }
         val superclass = javaClass.genericSuperclass

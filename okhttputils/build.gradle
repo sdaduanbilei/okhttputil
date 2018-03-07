@@ -5,7 +5,7 @@ apply plugin: 'kotlin-android'
 android {
     compileSdkVersion 26
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 19
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -19,7 +19,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    buildToolsVersion '24.0.1'
+    buildToolsVersion '26.0.2'
 }
 
 dependencies {
@@ -42,3 +42,7 @@ dependencies {
 repositories {
     mavenCentral()
 }
+
+apply from: '../artifactoy_push.gradle'
+
+

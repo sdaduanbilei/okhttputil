@@ -2,6 +2,7 @@ package com.scorpio.baselib.http
 
 import com.scorpio.baselib.http.builder.GetBuilder
 import com.scorpio.baselib.http.builder.PostFormBuilder
+import com.scorpio.baselib.http.builder.PostStringBuilder
 import com.scorpio.baselib.http.callback.Callback
 import com.scorpio.baselib.http.request.RequestCall
 import com.scorpio.baselib.http.utils.Platform
@@ -17,17 +18,19 @@ import java.io.IOException
 class OkHttpUtils {
 
     /**
-     * dobject 可以定义在全局也可以在类的内部使用
+     * object 可以定义在全局也可以在类的内部使用
      * object 就是单例模式的化身
      * object 可以实现 Java 中的匿名类
      * companion object 就是 Java 中的 static 变量
      * companion object 只能定义在对应的类中
      */
+    private var mInstance: OkHttpUtils? = null
     companion object {
         const val TAG = "OkHttpUtils"
         const val DEFAULT_MILLISECONDS = 10000L
         private var mOkHttpClint: OkHttpClient? = null
         private var mPlatform: Platform? = null
+
     }
 
     /**
@@ -41,6 +44,10 @@ class OkHttpUtils {
     }
 
 
+    fun initClient(client: OkHttpClient?) {
+        mOkHttpClint = client
+    }
+
     fun getOkHttpClient(): OkHttpClient {
         return mOkHttpClint!!
     }
@@ -51,6 +58,10 @@ class OkHttpUtils {
 
     fun post():PostFormBuilder{
         return PostFormBuilder()
+    }
+
+    fun postString():PostStringBuilder{
+        return PostStringBuilder()
     }
 
 
@@ -127,5 +138,7 @@ class OkHttpUtils {
         val PUT = "PUT"
         val PATCH = "PATCH"
     }
+
+
 }
 
