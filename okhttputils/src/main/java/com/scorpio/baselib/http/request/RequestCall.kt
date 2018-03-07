@@ -6,6 +6,7 @@ import com.scorpio.baselib.http.callback.Callback
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
 
@@ -42,8 +43,8 @@ class RequestCall(request: OkHttpRequest) {
     }
 
 
-    private fun buildCall(callback: Callback<*>): Call? {
-        request = generateRequest(callback)
+    private fun buildCall(callback: Callback<*>?): Call? {
+        request = generateRequest(callback!!)
         val loggingInterceptor = HttpLoggingInterceptor(HttpLogger())
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         if (readTimeOut > 0 || writeTimeOut > 0 || connTimeOut > 0) {
@@ -73,10 +74,18 @@ class RequestCall(request: OkHttpRequest) {
         return okHttpRequest.generateRequest(callback)
     }
 
+    /**
+     * 异步请求callback
+     */
     fun execute(callback: Callback<*>) {
         buildCall(callback)
         callback.onBefore(request!!,getOkHttpRequest()!!.getId())
         OkHttpUtils().execute(this,callback)
+    }
+
+    fun execute(): Response? {
+        buildCall(null)
+        return call!!.execute()
     }
 
     fun getCall(): Call? {
