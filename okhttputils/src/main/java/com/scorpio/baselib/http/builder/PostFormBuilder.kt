@@ -41,4 +41,14 @@ import java.io.File
         this.params[key] = `val`
         return this
     }
+
+    override fun param(key: String, `val`: Int): PostFormBuilder {
+        param(key, `val`.toString())
+        return this
+    }
+
+    override fun param(key: String, `val`: Boolean): PostFormBuilder {
+        param(key, `val`.toString())
+        return this
+    }
 }

@@ -7,7 +7,7 @@ import okhttp3.MediaType
 /**
  * Created by scorpio on 2018/3/7.
  */
-class PostStringBuilder() : OkHttpRequestBuilder<PostStringBuilder>() {
+class PostStringBuilder : OkHttpRequestBuilder<PostStringBuilder>() {
 
     private var content:String? = null
     private var mediaType:MediaType? = null

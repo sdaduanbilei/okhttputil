@@ -13,4 +13,10 @@ interface HasParamsable {
      * 通过key value 添加params
      */
     fun param(key: String, `val`: String): OkHttpRequestBuilder<*>
+
+    fun param(key: String, `val`: Int): OkHttpRequestBuilder<*>
+
+    fun param(key: String, `val`: Boolean): OkHttpRequestBuilder<*>
+
+
 }

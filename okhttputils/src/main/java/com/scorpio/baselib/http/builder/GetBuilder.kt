@@ -62,4 +62,12 @@ class GetBuilder : OkHttpRequestBuilder<GetBuilder>(), HasParamsable {
         this.params[key] = `val`
         return this
     }
+
+    override fun param(key: String, `val`: Int): GetBuilder {
+        return param(key, `val`.toString())
+    }
+
+    override fun param(key: String, `val`: Boolean): GetBuilder {
+        return param(key, `val`.toString())
+    }
 }

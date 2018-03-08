@@ -13,6 +13,5 @@ class HeaderInterceptor :Interceptor {
         builder.addHeader("Platform","Android/91")
         builder.addHeader("Authorization","ASDFADAFASDFE8802302")
         return chain.proceed(builder.build())
-
     }
 }
