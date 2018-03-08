@@ -2,6 +2,7 @@ package com.scorpio.baselib.http.callback
 
 import okhttp3.Call
 import okhttp3.Request
+import okhttp3.Response
 
 
 abstract class Callback<T> {
@@ -31,7 +32,14 @@ abstract class Callback<T> {
      *
      * @param progress
      */
-    fun inProgress(progress: Float, total: Long, id: Int) {
+    open fun inProgress(progress: Float, total: Long, id: Int) {
+
+    }
+
+    /**
+     * 缓存
+     */
+    open fun onCache(response: Any?,id: Int){
 
     }
 
@@ -51,10 +59,10 @@ abstract class Callback<T> {
      * @param response
      */
     @Throws(Exception::class)
-    abstract fun parseNetworkResponse(response: String?, id: Int): T?
+    abstract fun parseNetworkResponse(responseString: String?, response: Response?, id: Int): T?
     abstract fun onError(call: Call, e: Exception, id: Int)
     abstract fun onSucc(response: Any, id: Int)
-    abstract fun onCache(response: Any?,id: Int)
+
 
     companion object {
         val CALLBACK_DEFAULT = object : Callback<Any>() {
@@ -65,7 +73,7 @@ abstract class Callback<T> {
             override fun onSucc(response: Any, id: Int) {
             }
 
-            override fun parseNetworkResponse(response: String?, id: Int): Any? {
+            override fun parseNetworkResponse(responseString: String?, response: Response?,id: Int): Any? {
                 return null
             }
 

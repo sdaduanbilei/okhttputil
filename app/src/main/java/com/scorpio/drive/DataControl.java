@@ -1,6 +1,7 @@
 package com.scorpio.drive;
 
 import com.scorpio.baselib.http.OkHttpUtils;
+import com.scorpio.drive.domain.DetailData;
 import com.scorpio.drive.domain.JsonCallback;
 
 /**
@@ -9,9 +10,12 @@ import com.scorpio.drive.domain.JsonCallback;
 
 public class DataControl {
 
-	public void test(Object tag,JsonCallback<String> callback) {
-		new OkHttpUtils().get()
-				.url("http://119.27.170.36:805/api/services/app/mobileApp/GetIndex")
+	public void test(Object tag,JsonCallback<DetailData> callback) {
+		new OkHttpUtils()
+				.get()
+				.url("https://m.9ji.com/web/api/products/productCityDetail/v1")
+				.param("ppid","58206")
+				.addHeader("City","530102")
 				.tag(tag)
 				.build()
 				.execute(callback);

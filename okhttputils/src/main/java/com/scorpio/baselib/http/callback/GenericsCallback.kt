@@ -1,5 +1,6 @@
 package com.scorpio.baselib.http.callback
 
+import okhttp3.Response
 import java.lang.reflect.ParameterizedType
 
 
@@ -13,7 +14,7 @@ abstract class GenericsCallback<T>(jsonGenericsSerializator: JsonGenericsSeriali
         mGenericsSerializator = jsonGenericsSerializator
     }
 
-    override fun parseNetworkResponse(response: String?, id: Int): T? {
+    override fun parseNetworkResponse(responseString: String?,response: Response? ,id: Int): T? {
         // 数据验证不通过，json data 为空
         if (validateData.isEmpty()){
             return null

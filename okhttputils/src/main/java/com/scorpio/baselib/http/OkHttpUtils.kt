@@ -6,6 +6,7 @@ import com.scorpio.baselib.http.builder.PostFormBuilder
 import com.scorpio.baselib.http.builder.PostStringBuilder
 import com.scorpio.baselib.http.cache.BaseCache
 import com.scorpio.baselib.http.callback.Callback
+import com.scorpio.baselib.http.callback.FileCallBack
 import com.scorpio.baselib.http.request.RequestCall
 import com.scorpio.baselib.http.utils.Platform
 import okhttp3.Call
@@ -13,6 +14,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Response
 import okhttp3.ResponseBody
 import java.io.IOException
+import java.util.concurrent.Executor
 
 
 /**
@@ -49,9 +51,13 @@ class OkHttpUtils {
     }
 
 
-    fun initClient(client: OkHttpClient?,context: Context) {
+    fun initClient(client: OkHttpClient?, context: Context) {
         mBaseCache = BaseCache(context)
         mOkHttpClint = client
+    }
+
+    fun getDelivery(): Executor {
+        return mPlatform!!.defaultCallbackExecutor()
     }
 
     fun getOkHttpClient(): OkHttpClient {
@@ -77,11 +83,11 @@ class OkHttpUtils {
     fun execute(requestCall: RequestCall, callback: Callback<*>) {
         val id = requestCall.getOkHttpRequest()!!.getId()
         mPlatform!!.execute(Runnable {
-            val responseBody:ResponseBody? = mBaseCache!!.getCache(requestCall.getRequest()!!)
+            val responseBody: ResponseBody? = mBaseCache!!.getCache(requestCall.getRequest()!!)
             if (responseBody != null) {
                 // 校验Object 并返回
                 callback.validateReponse(responseBody.string(), id)!!
-                val o = callback.parseNetworkResponse(responseBody.string(),id)
+                val o = callback.parseNetworkResponse(responseBody.string(), null, id)
                 sendSuccCallback(ResponseResult(true, o), callback, id)
             }
         })
@@ -102,18 +108,20 @@ class OkHttpUtils {
                     return
                 }
 
-                val result = response.body()!!.string()
-                // 校验数据合法性
-                val validateErrorMsg: String = callback.validateReponse(result, id)!!
-                if (!validateErrorMsg.isEmpty()) {
-                    sendFailCallBack(call, IOException(validateErrorMsg), callback, id)
-                    return
+                // 校验数据合法性 // filecallback 不进行数据校验
+                var result =  ""
+                if (callback !is FileCallBack){
+                    result = response.body()!!.string()
+                    val validateErrorMsg: String = callback.validateReponse(result, id)!!
+                    if (!validateErrorMsg.isEmpty()) {
+                        sendFailCallBack(call, IOException(validateErrorMsg), callback, id)
+                        return
+                    }
                 }
                 // 校验Object 并返回
-
-                val o = callback.parseNetworkResponse(result, id)
+                val o = callback.parseNetworkResponse(result, response, id)
                 if (o != null) {
-                    mBaseCache!!.addCache(result,response)
+                    mBaseCache!!.addCache(result, response)
                     sendSuccCallback(ResponseResult(false, o), callback, id)
                 } else {
                     sendFailCallBack(call, IOException("object is null !!!"), callback, id)
@@ -127,7 +135,7 @@ class OkHttpUtils {
         mPlatform!!.execute(Runnable {
             val responseResult: ResponseResult<Any> = o as ResponseResult<Any>
             if (responseResult.isCache) {
-                callback.onCache(responseResult.result,id)
+                callback.onCache(responseResult.result, id)
             } else {
                 callback.onSucc(responseResult.result!!, id)
             }
@@ -158,14 +166,5 @@ class OkHttpUtils {
             }
         }
     }
-
-    object METHOD {
-        val HEAD = "HEAD"
-        val DELETE = "DELETE"
-        val PUT = "PUT"
-        val PATCH = "PATCH"
-    }
-
-
 }
 
