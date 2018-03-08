@@ -1,5 +1,37 @@
 ### OkhttpUtils kotlin 版本
 
+
+### 初始化 Application
+```kotlin
+val cookieJar = CookieJarImpl(PersistentCookieStore(applicationContext))
+        val client = OkHttpClient.Builder()
+                .cookieJar(cookieJar)
+                .addInterceptor(ReceivedCookiesInterceptor(applicationContext))
+                .addInterceptor(AddCookiesInterceptor(applicationContext))
+                .addInterceptor(HeaderInterceptor())
+                .build()
+        OkHttpUtils().initClient(client,applicationContext)
+```
+```ReceivedCookiesInterceptor``` 接收服务器端Set-Cookie 并设置
+
+```AddCookiesInterceptor``` 全局添加Cookie
+
+```HeaderInterceptor``` 全局添加Header
+
+
+```kotlin
+class HeaderInterceptor :Interceptor {
+    override fun intercept(chain: Interceptor.Chain): Response {
+        val builder = chain.request().newBuilder()
+        builder.addHeader("City", "530102")
+        builder.addHeader("Platform","Android/91")
+        builder.addHeader("Authorization","ASDFADAFASDFE8802302")
+        return chain.proceed(builder.build())
+
+    }
+}
+```
+
 ### GET 请求
 ```kotlin
 OkHttpUtils().get()
@@ -106,6 +138,28 @@ abstract class JsonCallback<T> : GenericsCallback<T>(JsonGenericsSerializator())
 }
 ```
 
+### 文件下载
+```kotlin
+OkHttpUtils().get()
+                .url("https://www.9ji.com/topic/Android/9ji.apk")
+                .build()
+                .execute(object : FileCallBack(Environment.getExternalStorageDirectory().absolutePath, Date().time.toString() + "_9ji.apk"){
+                    override fun onError(call: Call, e: Exception, id: Int) {
+                        Log.d("onError",e.toString())
+                    }
+
+                    override fun inProgress(progress: Float, total: Long, id: Int) {
+                        super.inProgress(progress, total, id)
+                        Log.d("inProgress", progress.toString() + "==" + total)
+                    }
+
+                    override fun onSucc(response: Any, id: Int) {
+                        val file = response as File
+                        Log.d("file",file.absolutePath)
+                    }
+                })
+```
+
 ###同步请求
 ```kotlin
 val response = OkHttpUtils()
@@ -137,3 +191,5 @@ OkHttpUtils()
 
         OkHttpUtils().cancelTag(this)
 ```
+
+

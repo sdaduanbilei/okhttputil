@@ -6,7 +6,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 /**
  * Created by scorpio on 2018/1/30.
  */
-class HttpLogger :HttpLoggingInterceptor.Logger{
+class HttpLoggerInterceptor :HttpLoggingInterceptor.Logger{
     override fun log(message: String?) {
         Log.e("okhttp",message)
     }

@@ -3,7 +3,7 @@ package com.scorpio.baselib.http.request
 import android.content.Context
 import com.scorpio.baselib.http.OkHttpUtils
 import com.scorpio.baselib.http.callback.Callback
-import com.scorpio.baselib.http.interceptor.HttpLogger
+import com.scorpio.baselib.http.interceptor.HttpLoggerInterceptor
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -47,7 +47,7 @@ class RequestCall(request: OkHttpRequest) {
 
     private fun buildCall(callback: Callback<*>?): Call? {
         request = generateRequest(callback!!)
-        val loggingInterceptor = HttpLoggingInterceptor(HttpLogger())
+        val loggingInterceptor = HttpLoggingInterceptor(HttpLoggerInterceptor())
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         if (readTimeOut > 0 || writeTimeOut > 0 || connTimeOut > 0) {
             readTimeOut = if (readTimeOut > 0) readTimeOut else OkHttpUtils.DEFAULT_MILLISECONDS

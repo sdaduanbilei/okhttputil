@@ -20,6 +20,7 @@ class App : Application() {
                 .cookieJar(cookieJar)
                 .addInterceptor(ReceivedCookiesInterceptor(applicationContext))
                 .addInterceptor(AddCookiesInterceptor(applicationContext))
+                .addInterceptor(HeaderInterceptor())
                 .build()
         OkHttpUtils().initClient(client,applicationContext)
     }
