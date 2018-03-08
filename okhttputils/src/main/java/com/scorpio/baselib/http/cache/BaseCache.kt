@@ -21,7 +21,8 @@ class BaseCache(context: Context) {
     private val maxDiskSize:Long = 20 * (1024 * 1024)
 
     init {
-        mDiskLruCache = DiskLruCache.open(File(filePath,fileName),1,1,maxDiskSize)
+        val version = context.packageManager.getPackageInfo(context.packageName,0).versionCode
+        mDiskLruCache = DiskLruCache.open(File(filePath,fileName),version,1,maxDiskSize)
     }
 
     fun addCache(data:String?,response: Response){

@@ -1,8 +1,9 @@
 package com.scorpio.baselib.http.request
 
-import com.scorpio.baselib.http.HttpLogger
+import android.content.Context
 import com.scorpio.baselib.http.OkHttpUtils
 import com.scorpio.baselib.http.callback.Callback
+import com.scorpio.baselib.http.interceptor.HttpLogger
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -25,6 +26,7 @@ class RequestCall(request: OkHttpRequest) {
     private var connTimeOut: Long = 0
 
     private var client: OkHttpClient? = null
+    private var mContext:Context? = null
 
 
     fun readTimeOut(readTimeOut: Long): RequestCall {

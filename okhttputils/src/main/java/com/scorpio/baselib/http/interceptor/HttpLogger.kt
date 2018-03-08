@@ -1,4 +1,4 @@
-package com.scorpio.baselib.http
+package com.scorpio.baselib.http.interceptor
 
 import android.util.Log
 import okhttp3.logging.HttpLoggingInterceptor
@@ -8,6 +8,6 @@ import okhttp3.logging.HttpLoggingInterceptor
  */
 class HttpLogger :HttpLoggingInterceptor.Logger{
     override fun log(message: String?) {
-        Log.e("HttpLogger",message)
+        Log.e("okhttp",message)
     }
 }
