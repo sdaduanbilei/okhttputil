@@ -45,25 +45,6 @@ class MainActivity : AppCompatActivity() {
 
 
         })
-
-//        OkHttpUtils().get()
-//                .url("https://www.9ji.com/topic/Android/9ji.apk")
-//                .build()
-//                .execute(object : FileCallBack(Environment.getExternalStorageDirectory().absolutePath, Date().time.toString() + "_9ji.apk"){
-//                    override fun onError(call: Call, e: Exception, id: Int) {
-//                        Log.d("onError",e.toString())
-//                    }
-//
-//                    override fun inProgress(progress: Float, total: Long, id: Int) {
-//                        super.inProgress(progress, total, id)
-//                        Log.d("inProgress", progress.toString() + "==" + total)
-//                    }
-//
-//                    override fun onSucc(response: Any, id: Int) {
-//                        val file = response as File
-//                        Log.d("file",file.absolutePath)
-//                    }
-//                })
     }
 
     override fun onDestroy() {

@@ -35,7 +35,7 @@ class HeaderInterceptor :Interceptor {
 ### GET 请求
 ```kotlin
 OkHttpUtils().get()
-                .url("https://m.9ji.com/web/api/products/productCityDetail/v1")
+                .url("https://m.baidu.com/web/api/products/productCityDetail/v1")
                 .param("ppid","58206")
                 .tag(this)
                 .build()
@@ -57,7 +57,7 @@ POST请求
 val map = HashMap<String, String>()
         map["label"] = ""
         map["cityId"] = "530102"
-        val file = File("/storage/emulated/0/9ji/1519456887211.jpg")
+        val file = File("/storage/emulated/0/baidu/1519456887211.jpg")
         OkHttpUtils().post()
                 .url("https://m.baidu.com/app/3_0/UserHandler.ashx")
                 .param("act", "UploadUserFace")
@@ -83,7 +83,7 @@ val json = JSONObject()
         json["status"] = "3"
         json["token"] = "7C08EA9A3203480C8D7523FAABD6ECC6"
         OkHttpUtils().postString()
-                .url("https://moa.ch999.com/wapi/V2/User/ChangeRecipientStatus")
+                .url("https://oa.baidu.com/wapi/V2/User/ChangeRecipientStatus")
                 .content(json.toString())
                 .addHeader("Authorization","Basic 3389 7C08EA9A3203480C8D7523FAABD6ECC6")
                 .mediaType(MediaType.parse("application/json; charset=utf-8")!!)
@@ -141,7 +141,7 @@ abstract class JsonCallback<T> : GenericsCallback<T>(JsonGenericsSerializator())
 ### 文件下载
 ```kotlin
 OkHttpUtils().get()
-                .url("https://www.9ji.com/topic/Android/9ji.apk")
+                .url("https://www.baidu.com/topic/Android/9ji.apk")
                 .build()
                 .execute(object : FileCallBack(Environment.getExternalStorageDirectory().absolutePath, Date().time.toString() + "_9ji.apk"){
                     override fun onError(call: Call, e: Exception, id: Int) {

@@ -13,7 +13,7 @@ public class DataControl {
 	public void test(Object tag,JsonCallback<DetailData> callback) {
 		new OkHttpUtils()
 				.get()
-				.url("https://m.9ji.com/web/api/products/productCityDetail/v1")
+				.url("https://m.baidu.com/web/api/products/productCityDetail/v1")
 				.param("ppid",1)
 				.param("result","第五季")
 				.param("isCache",false)
