@@ -1,4 +1,4 @@
-### OkhttpUtils kotlin 版本
+### OkhttpUtils kotlin 版本  特别感谢 [hongyangAndroid](https://github.com/hongyangAndroid/okhttputils)
 
 
 ### 初始化 Application
