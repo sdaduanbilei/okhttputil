@@ -37,12 +37,10 @@ class MainActivity : AppCompatActivity() {
 
             override fun onSucc(response: Any, id: Int) {
                 val detailData = response as DetailData
-                mText.text = "onSucc ===" + detailData.instalment.description
             }
 
             override fun onCache(response: Any?, id: Int) {
                 val detailData = response as DetailData
-                mText.text = "cache ===" + detailData.profile.title
             }
 
 
