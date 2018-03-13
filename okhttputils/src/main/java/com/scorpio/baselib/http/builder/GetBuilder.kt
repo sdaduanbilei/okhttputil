@@ -55,19 +55,23 @@ class GetBuilder : OkHttpRequestBuilder<GetBuilder>(), HasParamsable {
     /**
      * 添加单一param
      */
-    override fun param(key: String, `val`: String): GetBuilder {
+    override fun param(key: String, value: String?): GetBuilder {
         if (this.params.isEmpty()) {
             this.params = HashMap()
         }
-        this.params[key] = `val`
+        if (value.isNullOrBlank()) {
+            this.params[key] = ""
+        }else{
+            this.params[key] = value!!
+        }
         return this
     }
 
-    override fun param(key: String, `val`: Int): GetBuilder {
-        return param(key, `val`.toString())
+    override fun param(key: String, value: Int): GetBuilder {
+        return param(key, value.toString())
     }
 
-    override fun param(key: String, `val`: Boolean): GetBuilder {
-        return param(key, `val`.toString())
+    override fun param(key: String, value: Boolean): GetBuilder {
+        return param(key, value.toString())
     }
 }

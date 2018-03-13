@@ -34,9 +34,9 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.alibaba:fastjson:1.1.67.android'
     //compile 编译时与implementation相反 它允许外部模块不管在编译时还是运行时都可以调用api声明的依赖。和原来的compile很类似。
-    compile 'com.squareup.okhttp3:okhttp:3.9.1'
-    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.9.1'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+    implementation 'com.squareup.okhttp3:okhttp:3.9.1'
+    implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.9.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
     compile 'com.jakewharton:disklrucache:2.0.2'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

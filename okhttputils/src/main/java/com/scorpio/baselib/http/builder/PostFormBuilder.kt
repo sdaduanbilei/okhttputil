@@ -34,21 +34,25 @@ import java.io.File
         return this
     }
 
-    override fun param(key: String, `val`: String): PostFormBuilder {
+    override fun param(key: String, value: String?): PostFormBuilder {
         if (this.params.isEmpty()) {
             this.params = HashMap()
         }
-        this.params[key] = `val`
+        if (value.isNullOrEmpty()) {
+            this.params[key] = ""
+        } else {
+            this.params[key] = value!!
+        }
         return this
     }
 
-    override fun param(key: String, `val`: Int): PostFormBuilder {
-        param(key, `val`.toString())
+    override fun param(key: String, value: Int): PostFormBuilder {
+        param(key, value.toString())
         return this
     }
 
-    override fun param(key: String, `val`: Boolean): PostFormBuilder {
-        param(key, `val`.toString())
+    override fun param(key: String, value: Boolean): PostFormBuilder {
+        param(key, value.toString())
         return this
     }
 }

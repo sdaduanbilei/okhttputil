@@ -29,7 +29,6 @@ class OkHttpUtils {
      * companion object 就是 Java 中的 static 变量
      * companion object 只能定义在对应的类中
      */
-    private var mInstance: OkHttpUtils? = null
 
     companion object {
         const val TAG = "OkHttpUtils"
