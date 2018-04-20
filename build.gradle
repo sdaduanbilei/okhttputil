@@ -20,6 +20,7 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url 'http://code.9ji.com:18081/artifactory/libs-release-local/' }
         google()
         jcenter()
     }

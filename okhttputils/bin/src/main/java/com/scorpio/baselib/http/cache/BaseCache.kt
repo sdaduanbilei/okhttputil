@@ -35,14 +35,11 @@ class BaseCache(context: Context) {
             val rawResponse = buffer.readByteArray()
             val key = response.request().url().toString()
             val editor = mDiskLruCache!!.edit(HashUtil().hashKeyForDisk(key))
-            if (editor!=null){
-                editor.set(0, String(rawResponse, Charset.defaultCharset()))
-                editor.commit()
-                buffer.clone()
-            }
+            editor.set(0, String(rawResponse, Charset.defaultCharset()))
+            editor.commit()
+            buffer.clone()
         } catch (exc: IOException) {
             buffer.clone()
-            exc.printStackTrace()
         }
     }
 

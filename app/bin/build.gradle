@@ -1,17 +1,19 @@
-apply plugin: 'com.android.library'
+apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
 
 android {
     compileSdkVersion 26
     defaultConfig {
-        minSdkVersion 17
+        applicationId "com.scorpio.drive"
+        minSdkVersion 21
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
     buildTypes {
         release {
@@ -19,33 +21,25 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    buildToolsVersion '26.0.2'
+
+    kapt {
+        generateStubs = true
+    }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    //使用implementation配置依赖，对Gradle来说：
-    //编译时：不允许外部模块调用此依赖包，除非外部模块自己声明此依赖
-    //运行时：此依赖包只允许在运行时使用反射机制调用。
+    implementation project(':okhttputils')
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.alibaba:fastjson:1.1.67.android'
-    //compile 编译时与implementation相反 它允许外部模块不管在编译时还是运行时都可以调用api声明的依赖。和原来的compile很类似。
     implementation 'com.squareup.okhttp3:okhttp:3.9.1'
-    implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.9.1'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
-    implementation 'com.jakewharton:disklrucache:2.0.2'
-
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
+    implementation 'com.android.support:cardview-v7:26.1.0'
+    implementation 'com.android.support:design:26.1.0'
+    implementation 'com.github.clans:fab:1.6.4'
 }
-repositories {
-    mavenCentral()
-}
-
-apply from: '../artifactoy_push.gradle'
-
-
