@@ -9,6 +9,7 @@ import android.util.Log
 import com.scorpio.baselib.http.OkHttpUtils
 import com.scorpio.baselib.http.utils.Cookie
 import com.scorpio.drive.domain.JsonCallback
+import kotlinx.android.synthetic.main.activity_main.*
 import me.nereo.multi_image_selector.MultiImageSelector
 import me.nereo.multi_image_selector.MultiImageSelectorActivity
 import okhttp3.Call
@@ -30,9 +31,11 @@ class MainActivity : AppCompatActivity() {
 
         Cookie().setCookie(applicationContext,".9ji.com","cityId=" + Date().time)
 
-        MultiImageSelector.create(this)
-                .count(3)
-                .start(this, 2002)
+//        MultiImageSelector.create(this)
+//                .count(3)
+//                .start(this, 2002)
+
+        loadData()
 
 
 
@@ -90,13 +93,22 @@ class MainActivity : AppCompatActivity() {
 
 
         OkHttpUtils().get().url("https://m.9ji.com/web/api/products/productCityDetail/v1")
+                .param("ppid","62700")
+//                .param("t",Date().time.toString())
                 .tag(this).build().execute(object : JsonCallback<String>() {
             override fun onError(call: Call, e: Exception, id: Int) {
                 Log.d("onError",e.toString())
             }
 
+                    override fun onCache(response: Any?, id: Int) {
+                        super.onCache(response, id)
+                        Log.d(TAG,"CACHE===" + response.toString())
+                        mTv.text = response.toString()
+                    }
+
             override fun onSucc(response: Any, id: Int) {
                 Log.d("onSucc",response.toString())
+//                mTv.text = "succ==" + response.toString()
             }
 
         })
