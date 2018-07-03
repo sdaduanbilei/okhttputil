@@ -39,7 +39,6 @@ class MainActivity : AppCompatActivity() {
 
 
 
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -93,6 +92,7 @@ class MainActivity : AppCompatActivity() {
 
 
         OkHttpUtils().get().url("https://m.9ji.com/web/api/products/productCityDetail/v1")
+                .addHeader("token","12312")
                 .param("ppid","62700")
 //                .param("t",Date().time.toString())
                 .tag(this).build().execute(object : JsonCallback<String>() {

@@ -18,7 +18,7 @@ class BaseCache(context: Context) {
     private var mDiskLruCache:DiskLruCache? =null
     private var fileName = "cache"
     private var filePath =  context.cacheDir.path
-    private val maxDiskSize:Long = 20 * (1024 * 1024)
+    private val maxDiskSize:Long = 50 * (1024 * 1024)
 
     init {
         val version = context.packageManager.getPackageInfo(context.packageName,0).versionCode
