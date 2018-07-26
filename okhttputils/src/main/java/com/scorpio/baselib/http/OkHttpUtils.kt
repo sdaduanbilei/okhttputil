@@ -1,6 +1,7 @@
 package com.scorpio.baselib.http
 
 import android.content.Context
+import android.util.Log
 import com.scorpio.baselib.http.builder.GetBuilder
 import com.scorpio.baselib.http.builder.PostFormBuilder
 import com.scorpio.baselib.http.builder.PostStringBuilder
@@ -87,7 +88,8 @@ class OkHttpUtils {
                 // 校验Object 并返回
                 callback.validateReponse(responseBody.string(), id)!!
                 val o = callback.parseNetworkResponse(responseBody.string(), null, id)
-                sendSuccCallback(ResponseResult(true, o), callback, id)
+                val extra = callback.extraData
+                sendSuccCallback(ResponseResult(true, o,extra), callback, id)
             }
         })
 
@@ -119,9 +121,10 @@ class OkHttpUtils {
                 }
                 // 校验Object 并返回
                 val o = callback.parseNetworkResponse(result, response, id)
+                val extra = callback.extraData
                 if (o != null) {
                     mBaseCache!!.addCache(result, response)
-                    sendSuccCallback(ResponseResult(false, o), callback, id)
+                    sendSuccCallback(ResponseResult(false, o,extra), callback, id)
                 } else {
                     sendFailCallBack(call, IOException("object is null !!!"), callback, id)
                 }
@@ -135,8 +138,9 @@ class OkHttpUtils {
             val responseResult: ResponseResult<Any> = o as ResponseResult<Any>
             if (responseResult.isCache) {
                 callback.onCache(responseResult.result, id)
+                callback.onCache(responseResult.result,responseResult.extra,id)
             } else {
-                callback.onSucc(responseResult.result!!, id)
+                callback.onSucc(responseResult.result!!, responseResult.extra,id)
             }
             callback.onAfter(id)
         })

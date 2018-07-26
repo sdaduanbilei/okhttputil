@@ -14,7 +14,7 @@ import java.io.File
 class DataControl {
 
 
-    fun test(file:Map<String, File>, callback: JsonCallback<String>) {
+    fun test(file:LinkedHashMap<String, File>, callback: JsonCallback<String>) {
 //        params.put("Token", userData.getToken())
 //        params.put("verison", Utils.currentVersion(context) + "")
 //        params.put("Area", userData.getArea())
@@ -24,6 +24,7 @@ class DataControl {
                 .param("Area","HQ")
                 .param("appidentifier",Build.SERIAL)
                 .files("file",file)
+
                 .build().execute(callback)
 
     }

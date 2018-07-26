@@ -1,6 +1,7 @@
 package com.scorpio.baselib.http.cache
 
 import android.content.Context
+import android.util.Log
 import com.jakewharton.disklrucache.DiskLruCache
 import okhttp3.Request
 import okhttp3.Response
@@ -9,6 +10,8 @@ import okio.Buffer
 import java.io.File
 import java.io.IOException
 import java.nio.charset.Charset
+import java.util.Collections.replaceAll
+import java.util.regex.Pattern
 
 
 /**
@@ -19,6 +22,7 @@ class BaseCache(context: Context) {
     private var fileName = "cache"
     private var filePath =  context.cacheDir.path
     private val maxDiskSize:Long = 50 * (1024 * 1024)
+    private val TAG = "BaseCache"
 
     init {
         val version = context.packageManager.getPackageInfo(context.packageName,0).versionCode
@@ -45,6 +49,17 @@ class BaseCache(context: Context) {
             exc.printStackTrace()
         }
     }
+
+    fun replaceBlank(str: String?): String {
+        var dest = ""
+        if (str != null) {
+            val p = Pattern.compile("\\s*|\t|\r|\n")
+            val m = p.matcher(str)
+            dest = m.replaceAll("")
+        }
+        return dest
+    }
+
 
     fun getCache(request: Request): ResponseBody? {
         val key = request.url().toString()

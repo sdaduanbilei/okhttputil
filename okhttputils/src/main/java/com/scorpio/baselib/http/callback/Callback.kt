@@ -14,6 +14,11 @@ abstract class Callback<T> {
     var validateData: String = ""
 
     /**
+     * 用于返回额外的内容
+     */
+    var extraData:String = ""
+
+    /**
      * UI Thread
      *
      * @param request
@@ -43,6 +48,11 @@ abstract class Callback<T> {
 
     }
 
+    open fun onCache(response: Any?,extra: String,id: Int){
+
+    }
+
+
     /**
      * 自定义验证数据合法性
      * @param response
@@ -61,7 +71,7 @@ abstract class Callback<T> {
     @Throws(Exception::class)
     abstract fun parseNetworkResponse(responseString: String?, response: Response?, id: Int): T?
     abstract fun onError(call: Call, e: Exception, id: Int)
-    abstract fun onSucc(response: Any, id: Int)
+    abstract fun onSucc(response: Any, extra:String,id: Int)
 
 
     companion object {
@@ -70,7 +80,7 @@ abstract class Callback<T> {
 
             }
 
-            override fun onSucc(response: Any, id: Int) {
+            override fun onSucc(response: Any, extra: String,id: Int) {
             }
 
             override fun parseNetworkResponse(responseString: String?, response: Response?,id: Int): Any? {

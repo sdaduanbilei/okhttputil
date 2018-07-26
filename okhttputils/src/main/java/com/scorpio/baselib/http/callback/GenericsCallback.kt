@@ -19,6 +19,7 @@ abstract class GenericsCallback<T>(jsonGenericsSerializator: JsonGenericsSeriali
         if (validateData.isEmpty()){
             return null
         }
+
         val superclass = javaClass.genericSuperclass
         if (superclass is Class<*>) {
             //表示未设置泛型T

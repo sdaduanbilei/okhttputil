@@ -17,7 +17,7 @@ import java.io.File
         return PostFormRequest(url, tag, params, headers,files, id).build()
     }
 
-    fun files(key: String, files: Map<String, File>): PostFormBuilder {
+    fun files(key: String, files: LinkedHashMap<String, File>): PostFormBuilder {
         for (filename in files.keys) {
             this.files.add(FileInput(key, filename, files[filename]))
         }

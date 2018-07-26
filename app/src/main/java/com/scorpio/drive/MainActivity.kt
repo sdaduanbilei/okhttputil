@@ -10,15 +10,13 @@ import com.scorpio.baselib.http.OkHttpUtils
 import com.scorpio.baselib.http.utils.Cookie
 import com.scorpio.drive.domain.JsonCallback
 import kotlinx.android.synthetic.main.activity_main.*
-import me.nereo.multi_image_selector.MultiImageSelector
 import me.nereo.multi_image_selector.MultiImageSelectorActivity
 import okhttp3.Call
 import top.zibin.luban.Luban
 import top.zibin.luban.OnCompressListener
 import java.io.File
 import java.util.*
-
-
+import kotlin.collections.LinkedHashMap
 
 
 class MainActivity : AppCompatActivity() {
@@ -57,7 +55,7 @@ class MainActivity : AppCompatActivity() {
             file.mkdirs()
         }
 
-        val files1 = HashMap<String, File>()
+        val files1 = LinkedHashMap<String, File>()
         Luban.with(baseContext).load(imgSelect1)
                 .ignoreBy(100).setTargetDir(saveFile).setCompressListener(object : OnCompressListener {
                     override fun onSuccess(file: File?) {
@@ -69,7 +67,7 @@ class MainActivity : AppCompatActivity() {
 
                                 }
 
-                                override fun onSucc(response: Any, id: Int) {
+                                override fun onSucc(response: Any, extraData:String,id: Int) {
 
                                 }
 
@@ -89,29 +87,27 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun loadData() {
-
-
-        OkHttpUtils().get().url("https://m.9ji.com/web/api/products/productCityDetail/v1")
+        OkHttpUtils().get().url("https://m.9ji.com/web/api/sc/products/getDetailStatic/v1")
                 .addHeader("token","12312")
                 .param("ppid","62700")
-//                .param("t",Date().time.toString())
                 .tag(this).build().execute(object : JsonCallback<String>() {
-            override fun onError(call: Call, e: Exception, id: Int) {
-                Log.d("onError",e.toString())
-            }
+                    override fun onError(call: Call, e: Exception, id: Int) {
+                        Log.d("onError",e.toString())
+                    }
 
                     override fun onCache(response: Any?, id: Int) {
                         super.onCache(response, id)
-                        Log.d(TAG,"CACHE===" + response.toString())
-                        mTv.text = response.toString()
                     }
 
-            override fun onSucc(response: Any, id: Int) {
-                Log.d("onSucc",response.toString())
-//                mTv.text = "succ==" + response.toString()
-            }
+                    override fun onCache(response: Any?, extra: String, id: Int) {
+                        super.onCache(response, extra, id)
+                        Log.d(TAG, "extaraCache: " +extra)
+                    }
 
-        })
+                    override fun onSucc(response: Any, extraData: String, id: Int) {
+                        Log.d(TAG, "extraData: $extraData")
+                    }
+                })
     }
 
     override fun onDestroy() {
